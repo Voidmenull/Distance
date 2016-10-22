@@ -26,7 +26,7 @@ function DST:OnEvent()
         DST.Work.Continent = GetCurrentMapContinent()
         DST.Work.Zone = GetCurrentMapZone()
         DST.Work.ZoneName = GetZoneText()
-        if ZoneName == "Warsong Gulch" or ZoneName == "Arathi Basin" or ZoneName == "Alterac Valley" then Zone = ZoneName end
+        if DST.Work.ZoneName == "Warsong Gulch" or DST.Work.ZoneName == "Arathi Basin" or DST.Work.ZoneName == "Alterac Valley" then DST.Work.Zone = DST.Work.ZoneName end
 		DST.Work.pxbuff, DST.Work.pybuff = DST.GetPlayerMapPosition("player")
 		DST.Work.Time = -2
 	
