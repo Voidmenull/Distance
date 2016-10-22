@@ -1,9 +1,4 @@
--- for debug
-function print(content)
-	DEFAULT_CHAT_FRAME:AddMessage(content)
-end
-
-DST = CreateFrame("Frame")
+local DST = CreateFrame("Frame")
 DST:RegisterEvent("ADDON_LOADED")
 DST:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 DST.Version = "0.1"
