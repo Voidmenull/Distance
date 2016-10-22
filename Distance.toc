@@ -2,6 +2,6 @@
 ## Title: Distance
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-## SavedVariables: DSTVariable
+## SavedVariablesPerCharacter: DSTVariable
 
 Distance.lua
