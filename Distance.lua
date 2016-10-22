@@ -69,7 +69,6 @@ function DistToggle(arg1)
 	if string.lower(string.sub(arg1, 1, 5)) == "reset" then
 		DSTVariable.Distance = 0
 	elseif arg1 == nil or arg1 == "" then
-		DEFAULT_CHAT_FRAME:AddMessage(DST.Work.Continent)
 		DEFAULT_CHAT_FRAME:AddMessage("Total Distance: ".."|cFFFFFFFF"..DST:round(DSTVariable.Distance*10e9,0).." yrds|r | ".."|cFFFFFFFF"..DST:round(DSTVariable.Distance*10e6/1.0936,2).." km|r | ".."|cFFFFFFFF"..DST:round(DSTVariable.Distance*10e6/1.760,2).." miles|r",1,1,0)
 	end
 end
