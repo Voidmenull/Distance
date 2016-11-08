@@ -5,6 +5,7 @@ DST.Version = "0.1"
 
 -- pre-allocate work variables for OnUpdate functions
 DST.Work = 	{
+	DistanceBuff = 0,
 	Continent = 1,
 	Zone = 1,
 	ZoneName = "",
@@ -17,7 +18,13 @@ DST.Work = 	{
 
 -- local functions
 DST.GetPlayerMapPosition = GetPlayerMapPosition
+DST.UnitOnTaxi = UnitOnTaxi
 DST.sqrt = sqrt
+
+function DST:round(num, idp)
+  local mult = 10^(idp or 0)
+  return math.floor(num * mult + 0.5) / mult
+end
 
 
 function DST:OnEvent()
@@ -54,7 +61,9 @@ function DST:OnUpdate()
 	DST.Work.Time = DST.Work.Time + arg1
 	if DST.Work.Time >= DSTVariable.Interval then
 		DST.Work.px, DST.Work.py = DST.GetPlayerMapPosition("player")
-		DSTVariable.Distance = DSTVariable.Distance + (DST.sqrt(((DST.Work.px - DST.Work.pxbuff)/DST.MapScales[DST.Work.Continent][DST.Work.Zone].x)^2 + ((DST.Work.py - DST.Work.pybuff)/DST.MapScales[DST.Work.Continent][DST.Work.Zone].y)^2))/10e9
+		-- DistanceBuff = speed: ~13 with my 100% mount
+		DST.Work.DistanceBuff = DST.sqrt(((DST.Work.px - DST.Work.pxbuff)/DST.MapScales[DST.Work.Continent][DST.Work.Zone].x)^2 + ((DST.Work.py - DST.Work.pybuff)/DST.MapScales[DST.Work.Continent][DST.Work.Zone].y)^2)
+		if DST.Work.DistanceBuff <= 50 and not DST.UnitOnTaxi("player") then DSTVariable.Distance = DSTVariable.Distance + DST.Work.DistanceBuff/10e9 end
 		DST.Work.Time = 0
 		DST.Work.pxbuff = DST.Work.px
 		DST.Work.pybuff = DST.Work.py
@@ -77,10 +86,13 @@ SlashCmdList['DISTANCE'] = DistToggle
 SLASH_DISTANCE1 = '/distance'
 SLASH_DISTANCE2 = '/Distance'
 
-function DST:round(num, idp)
-  local mult = 10^(idp or 0)
-  return math.floor(num * mult + 0.5) / mult
+function SpeedToggle()
+	DEFAULT_CHAT_FRAME:AddMessage("Current Speed: ".."|cFFFFFFFF"..DST:round(DST.Work.DistanceBuff,2).." yrds per second|r | ".."|cFFFFFFFF"..DST:round((DST.Work.DistanceBuff/1.0936)*3.6,1).." km/h|r | ".."|cFFFFFFFF"..DST:round((DST.Work.DistanceBuff/1.760)*3.6,1).." mph|r",1,1,0)
 end
+
+SlashCmdList['SPEED'] = SpeedToggle
+SLASH_SPEED1 = '/speed'
+SLASH_SPEED2 = '/Speed'
 
 DST.MapScales = {
 	[0] = {[0] = {x=0.0000000001,y=0.0000000001}}, -- overworld dummy
